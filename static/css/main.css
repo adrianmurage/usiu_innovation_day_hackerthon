@@ -34,3 +34,12 @@ a {
  ****************************************************************************/
 
 /* Various other styles end */
+#map {
+  height: 400px;
+  width: 100%
+}
+
+.seed_type {
+  color: green;
+  font-size: large;
+}

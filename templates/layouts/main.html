@@ -33,6 +33,108 @@
 <!--[if lt IE 9]><script src="/static/js/libs/respond-1.4.2.min.js"></script><![endif]-->
 <!-- /scripts -->
 
+<script>
+  // Initialize and add the map
+  function initMap() {
+
+    const seedList = [
+  {
+    seed_family: "grain",
+    seed_type: "Maize Hybrid",
+    seed_name: "WH501",
+    made_by: "Western Seed Company LTD",
+    time_to_maturity: "5-6 months",
+    rainy_season: "both",
+  },
+  {
+    seed_family: "grain",
+    seed_type: "Maize Hybrid",
+    seed_name: "SC Punda Milia 51",
+    made_by: "Seedco Kenya",
+    time_to_maturity: "4 -4.5 months",
+    rainy_season: "both",
+  },
+  {
+    seed_family: "pulses",
+    seed_type: "Climbing bean",
+    seed_name: "Kenya Afya",
+    made_by: "Universiy of Nairobi",
+    time_to_maturity: "3 - 4 months",
+    rainy_season: "both",
+  },
+  {
+    seed_family: "roots/tubers",
+    seed_type: "Sweet Potato",
+    seed_name: "Namnyekera",
+    made_by: "",
+    time_to_maturity: "4 - 5 months",
+    rainy_season: "both",
+  },
+  {
+    seed_family: "grain",
+    seed_type: "Maize Hybrid",
+    seed_name: "WH 508",
+    made_by: "Western Seed Company LTD",
+    time_to_maturity: "5 - 6 months",
+    rainy_season: "short",
+  },
+  {
+    seed_family: "pulses",
+    seed_type: "chickpea",
+    seed_name: "LTD 065",
+    made_by: "LELDET LTD",
+    time_to_maturity: "3 -4 months",
+    rainy_season: "both",
+  },
+];
+    // The location of Uluru
+    const kenya = { lat: -1.286389, lng: 36.817223 }; 
+    // The map, centered at Uluru
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 14,
+      center: kenya,
+    });
+    // The marker, positioned at Uluru
+    const marker = new google.maps.Marker({
+      position: kenya,
+      draggable: true,
+      map: map,
+    });
+
+    function populateSeedList(seedList) {
+    const seedListDiv = document.getElementById("seed-list")
+    console.log(seedListDiv)
+
+    seedListDiv.innerHTML = '<div>' + seedList.map((individualSeed) => {
+      return (
+        '<hr>' +
+        '<p class="seed_type">' + individualSeed.seed_type + '<p>' +
+          '<p>' + individualSeed.seed_family + '</p>' +
+          '<p> Seed Name:' + individualSeed.seed_name + '</p>' + 
+          '<p> Made By:' + individualSeed.made_by + '</p>' +
+          '<p> Time to maturity:' + individualSeed.time_to_maturity + '</p>' +
+          '<p> Rainy Season:' + individualSeed.rainy_season + '</p>'
+          );
+}).join('') + '</div>'
+
+    // console.log(oneSeed) 
+  }
+  // populateSeedList(seedList)
+
+    google.maps.event.addListener(marker, 'dragend', function(marker){
+        var latLng = marker.latLng; 
+        currentLatitude = latLng.lat();
+        currentLongitude = latLng.lng();
+
+        console.log(`lat ${currentLatitude}`);
+        console.log(`lng ${currentLongitude}`);
+        populateSeedList(seedList);
+
+     }); 
+  }
+
+</script>
+
 </head>
 <body>
 
@@ -48,24 +150,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Project name</a>
+          <a class="navbar-brand" href="/">Farming Today</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li {% if request.endpoint == 'home' %} class="active" {% endif %}><a href="{{ url_for('home') }}">Home</a></li>
             <li {% if request.endpoint == 'about' %} class="active" {% endif %}><a href="{{ url_for('about') }}">About</a></li>
-            <li class="dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><a>Action</a></li>
-                <li><a>Another action</a></li>
-                <li><a>Something else here</a></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><a>Separated link</a></li>
-                <li><a>One more separated link</a></li>
-              </ul>
-            </li>
+   
           </ul>
           <ul class="nav navbar-nav pull-right">
             <li><a href="{{ url_for('register') }}">Signup</a></li>
@@ -114,6 +205,10 @@
     load: ('https:' == location.protocol ? '//ssl' : '//www') + '.google-analytics.com/ga.js'
   });
   </script>
+      <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDS6I4H9h-BWYzCWg_tBQ_vwiNuAceJtDI&callback=initMap&libraries=&v=weekly"
+      async
+    ></script>
 
 </body>
 </html>
